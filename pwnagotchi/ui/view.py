@@ -16,8 +16,8 @@ from pwnagotchi.ui.components import *
 from pwnagotchi.ui.state import State
 from pwnagotchi.voice import Voice
 
-WHITE = 0x00
-BLACK = 0xFF
+WHITE = 0xFF
+BLACK = 0x00
 ROOT = None
 
 
@@ -26,11 +26,11 @@ class View(object):
         global ROOT, BLACK, WHITE
         
         self.invert = 0
-        self._black = 0xFF
-        self._white = 0x00
+        self._black = 0x00
+        self._white = 0xFF
         if 'invert' in config['ui'] and config['ui']['invert'] == True:
             logging.debug("INVERT BLACK/WHITES:" + str(config['ui']['invert']))
-            self.invert = 1
+            self.invert = 0
             BLACK = 0x00
             WHITE = 0xFF
             self._black = 0x00
@@ -51,21 +51,21 @@ class View(object):
         self._width = self._layout['width']
         self._height = self._layout['height']
         self._state = State(state={
-            'channel': LabeledValue(color=BLACK, label='CH', value='00', position=self._layout['channel'],
+            'channel': LabeledValue(color=BLACK, label='ch', value='00', position=self._layout['channel'],
                                     label_font=fonts.Bold,
                                     text_font=fonts.Medium),
-            'aps': LabeledValue(color=BLACK, label='APS', value='0 (00)', position=self._layout['aps'],
+            'aps': LabeledValue(color=BLACK, label=' ap', value='0 (00)', position=self._layout['aps'],
                                 label_font=fonts.Bold,
                                 text_font=fonts.Medium),
 
-            'uptime': LabeledValue(color=BLACK, label='UP', value='00:00:00', position=self._layout['uptime'],
+            'uptime': LabeledValue(color=BLACK, label='  ', value='00:00:00', position=self._layout['uptime'],
                                    label_font=fonts.Bold,
                                    text_font=fonts.Medium),
 
             'line1': Line(self._layout['line1'], color=BLACK),
             'line2': Line(self._layout['line2'], color=BLACK),
 
-            'face': Text(value=faces.SLEEP, position=(config['ui']['faces']['position_x'], config['ui']['faces']['position_y']), color=BLACK, font=fonts.Huge, png=config['ui']['faces']['png']),
+            'face': Text(value=faces.SLEEP, position=(config['ui']['faces']['position_x'], config['ui']['faces']['position_y']), color=BLACK, font=fonts.BoldBig, png=config['ui']['faces']['png']),
 
             # 'friend_face': Text(value=None, position=self._layout['friend_face'], font=fonts.Bold, color=BLACK),
             'friend_name': Text(value=None, position=self._layout['friend_face'], font=fonts.BoldSmall, color=BLACK),
@@ -80,10 +80,10 @@ class View(object):
                            # the current maximum number of characters per line, assuming each character is 6 pixels wide
                            max_length=self._layout['status']['max']),
 
-            'shakes': LabeledValue(label='PWND ', value='0 (00)', color=BLACK,
+            'shakes': LabeledValue(label='pwn', value='0 (00)', color=BLACK,
                                    position=self._layout['shakes'], label_font=fonts.Bold,
                                    text_font=fonts.Medium),
-            'mode': Text(value='AUTO', position=self._layout['mode'],
+            'mode': Text(value='    ', position=self._layout['mode'],
                          font=fonts.Bold, color=BLACK),
         })
 
@@ -109,7 +109,7 @@ class View(object):
         self._state.has_element(key)
 
     def add_element(self, key, elem):
-        if self.invert is 1 and hasattr(elem, 'color'):
+        if self.invert is 1 and elem.color:
             if elem.color == 0xff:
                 elem.color = 0x00
             elif elem.color == 0x00:
@@ -162,14 +162,14 @@ class View(object):
         self.update()
 
     def on_manual_mode(self, last_session):
-        self.set('mode', 'MANU')
+        self.set('mode', ' cfg')
         self.set('face', faces.SAD if (last_session.epochs > 3 and last_session.handshakes == 0) else faces.HAPPY)
         self.set('status', self._voice.on_last_session_data(last_session))
         self.set('epoch', "%04d" % last_session.epochs)
         self.set('uptime', last_session.duration)
         self.set('channel', '-')
         self.set('aps', "%d" % last_session.associated)
-        self.set('shakes', '%d (%s)' % (last_session.handshakes, utils.total_unique_handshakes(self._config['bettercap']['handshakes'])))
+        self.set('shakes', '%d' % (last_session.handshakes + int(utils.total_unique_handshakes(self._config['bettercap']['handshakes']))))
         self.set_closest_peer(last_session.last_peer, last_session.peers)
         self.update()
 

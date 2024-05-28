@@ -24,7 +24,7 @@ class WaveshareV4(DisplayImpl):
         self._layout['shakes'] = (0, 109)
         self._layout['mode'] = (225, 109)
         self._layout['status'] = {
-            'pos': (125, 20),
+            'pos': (125 - (6 * 4), 20),
             'font': fonts.status_font(fonts.Medium),
             'max': 20
         }

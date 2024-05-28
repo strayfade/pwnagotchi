@@ -22,7 +22,7 @@ class Voice:
 
     def on_starting(self):
         return random.choice([
-            self._('Hi, I\'m Pwnagotchi! Starting ...'),
+            self._('Hi, I\'m Pwnagotchi! Starting...'),
             self._('New day, new hunt, new pwns!'),
             self._('Hack the Planet!')])
 
@@ -33,7 +33,7 @@ class Voice:
 
     def on_keys_generation(self):
         return random.choice([
-            self._('Generating keys, do not turn off ...')])
+            self._('Generating keys, do not turn off...')])
 
     def on_normal(self):
         return random.choice([
@@ -45,13 +45,14 @@ class Voice:
 
     def on_reading_logs(self, lines_so_far=0):
         if lines_so_far == 0:
-            return self._('Reading last session logs ...')
+            return self._('Reading last session logs...')
         else:
-            return self._('Read {lines_so_far} log lines so far ...').format(lines_so_far=lines_so_far)
+            return self._('Read {lines_so_far} log lines so far...').format(lines_so_far=lines_so_far)
 
     def on_bored(self):
         return random.choice([
-            self._('I\'m bored ...'),
+            self._('Got packets?'),
+            self._('I\'m bored...'),
             self._('Let\'s go for a walk!')])
 
     def on_motivated(self, reward):
@@ -62,17 +63,16 @@ class Voice:
 
     def on_sad(self):
         return random.choice([
-            self._('I\'m extremely bored ...'),
-            self._('I\'m very sad ...'),
+            self._('I\'m extremely bored...'),
+            self._('I\'m very sad...'),
             self._('I\'m sad'),
             '...'])
 
     def on_angry(self):
-        # passive aggressive or not? :D
         return random.choice([
-            '...',
-            self._('Leave me alone ...'),
-            self._('I\'m mad at you!')])
+            self._('...'),
+            self._('Leave me alone...'),
+            self._('Hmm...')])
 
     def on_excited(self):
         return random.choice([
@@ -80,7 +80,7 @@ class Voice:
             self._('I pwn therefore I am.'),
             self._('So many networks!!!'),
             self._('I\'m having so much fun!'),
-            self._('My crime is that of curiosity ...')])
+            self._('My crime is that of curiosity...')])
 
     def on_new_peer(self, peer):
         if peer.first_encounter():
@@ -94,14 +94,13 @@ class Voice:
 
     def on_lost_peer(self, peer):
         return random.choice([
-            self._('Uhm ... goodbye {name}').format(name=peer.name()),
-            self._('{name} is gone ...').format(name=peer.name())])
+            self._('Uhm... goodbye {name}').format(name=peer.name()),
+            self._('{name} is gone...').format(name=peer.name())])
 
     def on_miss(self, who):
         return random.choice([
-            self._('Whoops ... {name} is gone.').format(name=who),
-            self._('{name} missed!').format(name=who),
-            self._('Missed!')])
+            self._('{name} is gone...').format(name=who),
+            self._('{name} disappeared!').format(name=who)])
 
     def on_grateful(self):
         return random.choice([
@@ -110,60 +109,58 @@ class Voice:
 
     def on_lonely(self):
         return random.choice([
-            self._('Nobody wants to play with me ...'),
-            self._('I feel so alone ...'),
+            self._(':wah:'),
+            self._('I feel so alone...'),
             self._('Where\'s everybody?!')])
 
     def on_napping(self, secs):
         return random.choice([
-            self._('Napping for {secs}s ...').format(secs=secs),
-            self._('Zzzzz'),
+            self._('Napping for {secs}s...').format(secs=secs),
+            self._('Zzz ({secs}s)').format(secs=secs),
             self._('ZzzZzzz ({secs}s)').format(secs=secs)])
 
     def on_shutdown(self):
-        return random.choice([
-            self._('Good night.'),
-            self._('Zzz')])
+        return self._('Zzz')
 
     def on_awakening(self):
         return random.choice(['...', '!'])
 
     def on_waiting(self, secs):
         return random.choice([
-            self._('Waiting for {secs}s ...').format(secs=secs),
-            '...',
-            self._('Looking around ({secs}s)').format(secs=secs)])
+            self._('Waiting... ({secs}s)').format(secs=secs),
+            self._('... ({secs}s)').format(secs=secs),
+            self._('Looking around... ({secs}s)').format(secs=secs)])
 
     def on_assoc(self, ap):
         ssid, bssid = ap['hostname'], ap['mac']
         what = ssid if ssid != '' and ssid != '<hidden>' else bssid
         return random.choice([
-            self._('Hey {what} let\'s be friends!').format(what=what),
-            self._('Associating to {what}').format(what=what),
-            self._('Yo {what}!').format(what=what)])
+            self._('Hey {what}, let\'s be friends!').format(what=what),
+            self._('Associating to {what}!').format(what=what),
+            self._('Hello {what}!').format(what=what)])
 
     def on_deauth(self, sta):
         return random.choice([
-            self._('Just decided that {mac} needs no WiFi!').format(mac=sta['mac']),
+            self._('Just decided that {mac} doesn\'t need WiFi!').format(mac=sta['mac']),
             self._('Deauthenticating {mac}').format(mac=sta['mac']),
-            self._('Kickbanning {mac}!').format(mac=sta['mac'])])
+            self._('Sending deauth to {mac}!').format(mac=sta['mac'])])
 
     def on_handshakes(self, new_shakes):
         s = 's' if new_shakes > 1 else ''
-        return self._('Cool, we got {num} new handshake{plural}!').format(num=new_shakes, plural=s)
+        return self._('Captured {num} new handshake{plural}!').format(num=new_shakes, plural=s)
 
     def on_unread_messages(self, count, total):
         s = 's' if count > 1 else ''
         return self._('You have {count} new message{plural}!').format(count=count, plural=s)
 
     def on_rebooting(self):
-        return self._("Oops, something went wrong ... Rebooting ...")
+        return self._("Oops, something went wrong... Rebooting...")
 
     def on_uploading(self, to):
-        return self._("Uploading data to {to} ...").format(to=to)
+        return self._("Uploading data to {to}...").format(to=to)
 
     def on_downloading(self, name):
-        return self._("Downloading from {name} ...").format(name=name)
+        return self._("Downloading from {name}...").format(name=name)
 
     def on_last_session_data(self, last_session):
         status = self._('Kicked {num} stations\n').format(num=last_session.deauthed)

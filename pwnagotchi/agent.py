@@ -149,7 +149,7 @@ class Agent(Client, Automata, AsyncAdvertiser, AsyncTrainer):
         if self._epoch.inactive_for >= max_inactive:
             recon_time *= recon_mul
 
-        self._view.set('channel', '*')
+        self._view.set('channel', '-')
 
         if not channels:
             self._current_channel = 0
@@ -243,7 +243,7 @@ class Agent(Client, Automata, AsyncAdvertiser, AsyncTrainer):
             self._aps_on_channel = len([ap for ap in self._access_points if ap['channel'] == self._current_channel])
             stas_on_channel = sum(
                 [len(ap['clients']) for ap in self._access_points if ap['channel'] == self._current_channel])
-            self._view.set('aps', '%d (%d)' % (self._aps_on_channel, self._tot_aps))
+            self._view.set('aps', '%d' % (self._aps_on_channel + self._tot_aps))
             self._view.set('sta', '%d (%d)' % (stas_on_channel, tot_stas))
 
     def _update_handshakes(self, new_shakes=0):
@@ -251,10 +251,10 @@ class Agent(Client, Automata, AsyncAdvertiser, AsyncTrainer):
             self._epoch.track(handshake=True, inc=new_shakes)
 
         tot = utils.total_unique_handshakes(self._config['bettercap']['handshakes'])
-        txt = '%d (%d)' % (len(self._handshakes), tot)
+        txt = '%d' % (len(self._handshakes) + tot)
 
         if self._last_pwnd is not None:
-            txt += ' [%s]' % self._last_pwnd
+            txt += ' (%s)' % self._last_pwnd
 
         self._view.set('shakes', txt)
 

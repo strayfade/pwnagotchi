@@ -1,9 +1,14 @@
-# Pwnagotchi
-This is the main source for all forks:
-- RPiZeroW (32bit)
-- RPiZero2W, RPi3, RPi4, RPi5 (64bit)
+# Pwnagotchi (*strayfade fork*)
 
-[GH Sponsor](https://github.com/sponsors/jayofelony)
+### Main changes:
+- Personalized voice lines a little bit and added additional lines
+- Much cleaner UI layout (in my opinion)
+
+### Compatibility:
+- RPiZeroW (32bit)
+  - **(Tested)**
+- RPiZero2W, RPi3, RPi4, RPi5 (64bit)
+  - **(Not tested but should work)**
 
 ---
 
