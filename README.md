@@ -1,5 +1,7 @@
 # Pwnagotchi (*strayfade fork*)
 
+- This repository is mainly used to back up and store my modified `pwnagotchi` install/config.
+
 ### Main changes:
 - Personalized voice lines a little bit and added additional lines
 - Much cleaner UI layout (in my opinion)
